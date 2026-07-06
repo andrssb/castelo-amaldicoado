@@ -138,7 +138,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Teclado: ← → andar · Z pular (2x = pulo duplo) · X arremessar',
+                  'Teclado: ← → andar · ↓ agachar · Z pular (2x = pulo duplo) · X arremessar',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white38, fontSize: 12),
                 ),

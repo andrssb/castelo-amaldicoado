@@ -24,12 +24,17 @@ class Knight extends PositionComponent
   static const double _moveSpeed = 165;
   static const double _jumpSpeed = 380;
   static const int _maxJumps = 2; // pulo duplo
+  static const double _standHeight = 40;
+  static const double _crouchHeight = 24;
 
   final Vector2 _velocity = Vector2.zero();
   double _horizontalInput = 0;
   int _jumpsLeft = _maxJumps;
   bool _grounded = false;
+  bool _crouching = false;
   double _facing = 1;
+
+  late final RectangleHitbox _hitbox;
 
   // --- combate / armadura ---
   ArmorState armor = ArmorState.armored;
@@ -38,7 +43,23 @@ class Knight extends PositionComponent
 
   @override
   Future<void> onLoad() async {
-    add(RectangleHitbox(collisionType: CollisionType.active));
+    _hitbox = RectangleHitbox(
+      position: Vector2.zero(),
+      size: Vector2(size.x, _standHeight),
+      collisionType: CollisionType.active,
+    );
+    add(_hitbox);
+  }
+
+  /// Agachar/levantar: encolhe o corpo mantendo os pes no chao. So agacha no chao.
+  void _setCrouch(bool value) {
+    if (value == _crouching) return;
+    _crouching = value;
+    final newHeight = value ? _crouchHeight : _standHeight;
+    final delta = size.y - newHeight; // positivo ao agachar
+    position.y += delta; // desce o topo para o "pe" ficar no mesmo lugar
+    size.y = newHeight;
+    _hitbox.size.setValues(size.x, newHeight);
   }
 
   @override
@@ -111,16 +132,21 @@ class Knight extends PositionComponent
         keysPressed.contains(LogicalKeyboardKey.keyA);
     final right = keysPressed.contains(LogicalKeyboardKey.arrowRight) ||
         keysPressed.contains(LogicalKeyboardKey.keyD);
-    _horizontalInput = (right ? 1 : 0) - (left ? 1 : 0);
+    final down = keysPressed.contains(LogicalKeyboardKey.arrowDown) ||
+        keysPressed.contains(LogicalKeyboardKey.keyS);
+
+    // Agacha so quando esta no chao; ao agachar, nao anda.
+    _setCrouch(down && _grounded);
+    _horizontalInput = _crouching ? 0 : (right ? 1 : 0) - (left ? 1 : 0);
 
     if (event is KeyDownEvent) {
       if (event.logicalKey == LogicalKeyboardKey.keyZ ||
           event.logicalKey == LogicalKeyboardKey.space) {
-        _tryJump();
+        if (!_crouching) _tryJump(); // nao pula agachado
         return true;
       }
       if (event.logicalKey == LogicalKeyboardKey.keyX) {
-        _tryThrow();
+        _tryThrow(); // agachado, o arremesso ja sai rente ao chao
         return true;
       }
     }

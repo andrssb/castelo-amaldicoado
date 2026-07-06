@@ -73,7 +73,7 @@ flutter pub get
 flutter run                   # -d chrome, -d windows, ou um emulador
 ```
 
-> Controles (teclado, para testar no desktop): **← →** anda · **Z** pula (2x = pulo duplo) · **X** arremessa.
+> Controles (teclado, para testar no desktop): **← →** anda · **↓** agacha · **Z** pula (2x = pulo duplo) · **X** arremessa.
 
 ## Status
 
