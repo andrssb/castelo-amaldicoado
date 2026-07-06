@@ -111,7 +111,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         letterSpacing: 2,
                         color: Color(0xFFE8C36B))),
                 const SizedBox(height: 4),
-                const Text('Desafio diario',
+                const Text('Desafio diário',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white70)),
                 const SizedBox(height: 24),
@@ -138,7 +138,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Teclado: ← → andar · ↓ agachar · Z pular (2x = pulo duplo) · X arremessar',
+                  'Teclado: ← → andar · ↓ agachar · Z pular (2x = pulo duplo) · X lançar fogo',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white38, fontSize: 12),
                 ),
@@ -162,7 +162,7 @@ class _MenuScreenState extends State<MenuScreen> {
             const Icon(Icons.cloud_off, size: 18, color: Colors.orangeAccent),
             const SizedBox(width: 8),
             const Expanded(
-              child: Text('Modo offline — jogue normalmente, mas o ranking so conta com o servidor no ar.',
+              child: Text('Modo offline — jogue normalmente, mas o ranking só conta com o servidor no ar.',
                   style: TextStyle(fontSize: 12)),
             ),
             TextButton(onPressed: _load, child: const Text('Reconectar')),
@@ -180,7 +180,7 @@ class _MenuScreenState extends State<MenuScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Maldicoes de hoje (${c.date})',
+            Text('Maldições de hoje (${c.date})',
                 style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             ...c.curses.map((curse) => Padding(
@@ -224,7 +224,7 @@ class GameScreen extends StatelessWidget {
   }
 }
 
-/// Aparece so quando a run termina (vitoria ou derrota).
+/// Aparece só quando a run termina (vitória ou derrota).
 class _ResultOverlay extends StatelessWidget {
   const _ResultOverlay({required this.game});
 
@@ -243,7 +243,7 @@ class _ResultOverlay extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(won ? 'VITORIA' : 'DERROTA',
+              Text(won ? 'VITÓRIA' : 'DERROTA',
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.w900,

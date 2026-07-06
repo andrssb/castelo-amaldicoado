@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../cursed_castle_game.dart';
 import 'platform_block.dart';
-import 'projectile.dart';
+import 'fireball.dart';
 import 'skeleton.dart';
 
 /// Estado da armadura de Arthur, na tradicao do genero:
@@ -146,7 +146,7 @@ class Knight extends PositionComponent
         return true;
       }
       if (event.logicalKey == LogicalKeyboardKey.keyX) {
-        _tryThrow(); // agachado, o arremesso ja sai rente ao chao
+        _castFire(); // agachado, o fogo já sai rente ao chão
         return true;
       }
     }
@@ -161,11 +161,11 @@ class Knight extends PositionComponent
     }
   }
 
-  void _tryThrow() {
+  void _castFire() {
     if (_throwCooldown > 0) return;
     _throwCooldown = 0.35;
     final spawn = position + Vector2(size.x / 2, size.y / 2);
-    parent?.add(Projectile(position: spawn, direction: _facing));
+    parent?.add(Fireball(position: spawn, direction: _facing));
   }
 
   // ---------------------------------------------------------------------------

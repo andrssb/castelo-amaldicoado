@@ -6,11 +6,11 @@ package com.andrssb.cursedcastle.dailychallenge;
  */
 public enum Curse {
 
-    ICE_FLOOR("Chao de Gelo", "O chao escorrega; frear e dificil."),
+    ICE_FLOOR("Chão de Gelo", "O chão escorrega; frear é difícil."),
     HORDE("Horda de Esqueletos", "Dobro de inimigos no caminho."),
-    DARKNESS("Escuridao", "A visao ao redor de Arthur e reduzida."),
-    GLASS_ARMOR("Armadura de Vidro", "Um unico dano ja tira a armadura."),
-    FRENZY("Furia dos Mortos", "Os inimigos se movem mais rapido."),
+    DARKNESS("Escuridão", "A visão ao redor de Arthur é reduzida."),
+    GLASS_ARMOR("Armadura de Vidro", "Um único dano já tira a armadura."),
+    FRENZY("Fúria dos Mortos", "Os inimigos se movem mais rápido."),
     BLOOD_MOON("Lua de Sangue", "Inimigos valem mais pontos, mas revidam.");
 
     private final String label;

@@ -10,10 +10,10 @@ DailyChallenge offlineDailyChallenge([DateTime? now]) {
   final seed = date.millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
 
   const pool = [
-    CurseInfo(id: 'ICE_FLOOR', label: 'Chao de Gelo', description: 'O chao escorrega.'),
+    CurseInfo(id: 'ICE_FLOOR', label: 'Chão de Gelo', description: 'O chão escorrega.'),
     CurseInfo(id: 'HORDE', label: 'Horda de Esqueletos', description: 'Dobro de inimigos.'),
-    CurseInfo(id: 'FRENZY', label: 'Furia dos Mortos', description: 'Inimigos mais rapidos.'),
-    CurseInfo(id: 'GLASS_ARMOR', label: 'Armadura de Vidro', description: 'Um dano ja tira a armadura.'),
+    CurseInfo(id: 'FRENZY', label: 'Fúria dos Mortos', description: 'Inimigos mais rápidos.'),
+    CurseInfo(id: 'GLASS_ARMOR', label: 'Armadura de Vidro', description: 'Um dano já tira a armadura.'),
   ];
 
   // escolhe duas maldicoes a partir da seed

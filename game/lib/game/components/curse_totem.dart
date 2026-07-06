@@ -5,7 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../cursed_castle_game.dart';
-import 'projectile.dart';
+import 'fireball.dart';
 
 /// Totem de maldicao. Destrui-lo e o objetivo da fase; cada um destruido conta
 /// para o placar e para o progresso da run.
@@ -46,7 +46,7 @@ class CurseTotem extends PositionComponent
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is Projectile) {
+    if (other is Fireball) {
       game.onCurseDestroyed();
       removeFromParent();
     }

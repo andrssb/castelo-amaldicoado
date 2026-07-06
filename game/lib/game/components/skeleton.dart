@@ -3,7 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../cursed_castle_game.dart';
-import 'projectile.dart';
+import 'fireball.dart';
 
 /// Esqueleto inimigo. Anda de um lado para o outro dentro de um trecho e some
 /// quando atingido por um projetil, somando ao placar.
@@ -61,7 +61,7 @@ class Skeleton extends PositionComponent
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is Projectile) {
+    if (other is Fireball) {
       _hp--;
       if (_hp <= 0) {
         game.onEnemyDefeated();
