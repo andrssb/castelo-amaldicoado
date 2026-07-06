@@ -1,6 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -94,7 +93,7 @@ class Knight extends PositionComponent
       );
     }
     // visor apontando para a direcao do movimento
-    final visorX = _facing >= 0 ? size.x - 6 : 2;
+    final visorX = _facing >= 0 ? size.x - 6 : 2.0;
     canvas.drawRect(
       Rect.fromLTWH(visorX, 12, 4, 4),
       Paint()..color = const Color(0xFF1B1030),
@@ -147,8 +146,8 @@ class Knight extends PositionComponent
   // Colisoes
   // ---------------------------------------------------------------------------
   @override
-  void onCollision(Set<Vector2> points, PositionComponent other) {
-    super.onCollision(points, other);
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
     if (other is PlatformBlock) {
       _resolvePlatform(other);
     } else if (other is Skeleton) {

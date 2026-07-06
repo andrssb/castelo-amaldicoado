@@ -1,4 +1,4 @@
-/// Modelos que espelham o contrato da API do servidor Java.
+// Modelos que espelham o contrato da API do servidor Java.
 
 class CurseInfo {
   const CurseInfo({

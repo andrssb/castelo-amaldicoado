@@ -59,8 +59,8 @@ class Skeleton extends PositionComponent
   }
 
   @override
-  void onCollisionStart(Set<Vector2> points, PositionComponent other) {
-    super.onCollisionStart(points, other);
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
     if (other is Projectile) {
       _hp--;
       if (_hp <= 0) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'api/game_api.dart';
 import 'api/models.dart';
+import 'api/offline_challenge.dart';
 import 'game/cursed_castle_game.dart';
 import 'ui/hud.dart';
 
@@ -42,7 +43,8 @@ class _MenuScreenState extends State<MenuScreen> {
   final GameApi _api = GameApi();
   final TextEditingController _name = TextEditingController(text: 'Arthur');
   DailyChallenge? _challenge;
-  String? _error;
+  bool _offline = false;
+  bool _loading = true;
 
   @override
   void initState() {
@@ -52,14 +54,23 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Future<void> _load() async {
     setState(() {
-      _error = null;
+      _loading = true;
+      _offline = false;
       _challenge = null;
     });
     try {
       final c = await _api.fetchDaily();
-      setState(() => _challenge = c);
-    } catch (e) {
-      setState(() => _error = 'Servidor offline. Suba o backend Java para o desafio do dia.');
+      setState(() {
+        _challenge = c;
+        _loading = false;
+      });
+    } catch (_) {
+      // Servidor indisponivel: cai para o desafio local (sem ranking).
+      setState(() {
+        _challenge = offlineDailyChallenge();
+        _offline = true;
+        _loading = false;
+      });
     }
   }
 
@@ -104,10 +115,10 @@ class _MenuScreenState extends State<MenuScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white70)),
                 const SizedBox(height: 24),
-                if (_error != null) _errorBox(),
-                if (_challenge != null) _challengeCard(_challenge!),
-                if (_challenge == null && _error == null)
+                if (_loading)
                   const Center(child: CircularProgressIndicator()),
+                if (_offline) _offlineBanner(),
+                if (_challenge != null) _challengeCard(_challenge!),
                 const SizedBox(height: 20),
                 TextField(
                   controller: _name,
@@ -139,16 +150,22 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  Widget _errorBox() => Container(
-        padding: const EdgeInsets.all(12),
+  Widget _offlineBanner() => Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.red.withOpacity(0.15),
+          color: Colors.orange.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Column(
+        child: Row(
           children: [
-            Text(_error!, textAlign: TextAlign.center),
-            TextButton(onPressed: _load, child: const Text('Tentar de novo')),
+            const Icon(Icons.cloud_off, size: 18, color: Colors.orangeAccent),
+            const SizedBox(width: 8),
+            const Expanded(
+              child: Text('Modo offline — jogue normalmente, mas o ranking so conta com o servidor no ar.',
+                  style: TextStyle(fontSize: 12)),
+            ),
+            TextButton(onPressed: _load, child: const Text('Reconectar')),
           ],
         ),
       );
@@ -156,7 +173,7 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget _challengeCard(DailyChallenge c) => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: const Color(0xFF24305C)),
         ),
@@ -221,7 +238,7 @@ class _ResultOverlay extends StatelessWidget {
         if (status == RunStatus.playing) return const SizedBox.shrink();
         final won = status == RunStatus.won;
         return Container(
-          color: Colors.black.withOpacity(0.7),
+          color: Colors.black.withValues(alpha: 0.7),
           alignment: Alignment.center,
           child: Column(
             mainAxisSize: MainAxisSize.min,

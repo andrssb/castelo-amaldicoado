@@ -1,7 +1,5 @@
-import 'package:flame/camera.dart';
-import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame/geometry.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/foundation.dart';
 
 import '../api/game_api.dart';
@@ -52,9 +50,6 @@ class CursedCastleGame extends FlameGame
     world.add(_knight);
 
     camera.follow(_knight);
-    camera.setBounds(
-      Rectangle.fromLTRB(0, 0, levelWidth, levelHeight + 400),
-    );
   }
 
   @override

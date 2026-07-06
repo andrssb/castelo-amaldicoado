@@ -38,7 +38,7 @@ class LevelBuilder {
     final components = <PositionComponent>[];
 
     // segmentos de chao com alguns buracos
-    final segments = 14;
+    const segments = 14;
     double x = 0;
     for (var i = 0; i < segments; i++) {
       final gap = i > 1 && rng.nextDouble() < 0.22;
