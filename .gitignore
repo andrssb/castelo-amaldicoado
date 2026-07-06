@@ -1,0 +1,29 @@
+# ---- Flutter / Dart (game/) ----
+game/.dart_tool/
+game/.flutter-plugins
+game/.flutter-plugins-dependencies
+game/.packages
+game/build/
+game/.pub-cache/
+game/.pub/
+game/android/
+game/ios/
+game/linux/
+game/macos/
+game/windows/
+game/web/
+*.iml
+
+# ---- Java / Maven (server/) ----
+server/target/
+server/.mvn/
+!server/.mvn/wrapper/maven-wrapper.properties
+
+# ---- IDE ----
+.idea/
+.vscode/
+*.swp
+
+# ---- OS ----
+.DS_Store
+Thumbs.db

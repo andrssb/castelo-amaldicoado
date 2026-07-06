@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: cursed-castle-server
+
+  # H2 em memoria para desenvolvimento. Em producao, defina as variaveis
+  # SPRING_DATASOURCE_* apontando para o PostgreSQL.
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:cursedcastle;DB_CLOSE_DELAY=-1}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+  h2:
+    console:
+      enabled: true      # http://localhost:8080/h2-console (apenas dev)
+
+server:
+  port: ${PORT:8080}
+
+# Origens liberadas para o cliente Flutter (dev). Ajuste para o dominio real em producao.
+game:
+  cors:
+    allowed-origins: "*"
