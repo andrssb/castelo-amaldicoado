@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../cursed_castle_game.dart';
+import 'boss.dart';
 import 'platform_block.dart';
 import 'fireball.dart';
 import 'skeleton.dart';
@@ -99,26 +100,68 @@ class Knight extends PositionComponent
     final blinking = _invulnerable > 0 && (_invulnerable * 20).floor().isEven;
     if (blinking) return;
 
-    final bodyColor = switch (armor) {
-      ArmorState.armored => const Color(0xFFB33A3A), // armadura vermelho/dourado
-      ArmorState.bare => const Color(0xFFE7C9A0), // "cueca" classica
-      ArmorState.dead => const Color(0xFF5A5A5A),
-    };
-    canvas.drawRect(size.toRect(), Paint()..color = bodyColor);
+    final w = size.x;
+    final h = size.y;
+    final armored = armor == ArmorState.armored;
+    final dead = armor == ArmorState.dead;
 
-    // elmo / detalhe dourado quando blindado
-    if (armor == ArmorState.armored) {
-      canvas.drawRect(
-        Rect.fromLTWH(0, 0, size.x, 8),
-        Paint()..color = const Color(0xFFE8C36B),
-      );
-    }
-    // visor apontando para a direcao do movimento
-    final visorX = _facing >= 0 ? size.x - 6 : 2.0;
-    canvas.drawRect(
-      Rect.fromLTWH(visorX, 12, 4, 4),
-      Paint()..color = const Color(0xFF1B1030),
+    final armorColor = dead
+        ? const Color(0xFF5A5A5A)
+        : (armored ? const Color(0xFFB33A3A) : const Color(0xFF6E5A46));
+    const skin = Color(0xFFE7C9A0);
+
+    final headH = h * 0.30;
+    final torsoH = h * 0.42;
+    final legTop = headH + torsoH;
+
+    // pernas
+    final legPaint = Paint()..color = const Color(0xFF3A2E2E);
+    canvas.drawRect(Rect.fromLTWH(w * 0.22, legTop, w * 0.22, h - legTop), legPaint);
+    canvas.drawRect(Rect.fromLTWH(w * 0.56, legTop, w * 0.22, h - legTop), legPaint);
+
+    // tronco (armadura)
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+          Rect.fromLTWH(w * 0.14, headH, w * 0.72, torsoH), const Radius.circular(3)),
+      Paint()..color = armorColor,
     );
+    if (armored) {
+      // faixa dourada no peito
+      canvas.drawRect(
+          Rect.fromLTWH(w * 0.14, headH + torsoH * 0.4, w * 0.72, 3),
+          Paint()..color = const Color(0xFFE8C36B));
+    }
+
+    // cabeca
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+          Rect.fromLTWH(w * 0.28, 2, w * 0.44, headH), const Radius.circular(3)),
+      Paint()..color = skin,
+    );
+    // olhos
+    if (!dead) {
+      final eye = Paint()..color = const Color(0xFF1B1030);
+      final ex = _facing >= 0 ? w * 0.52 : w * 0.34;
+      canvas.drawRect(Rect.fromLTWH(ex, headH * 0.5, 3, 3), eye);
+    }
+
+    // elmo dourado com penacho (so blindado)
+    if (armored) {
+      canvas.drawRect(Rect.fromLTWH(w * 0.26, 0, w * 0.48, headH * 0.42),
+          Paint()..color = const Color(0xFFE8C36B));
+      canvas.drawRect(Rect.fromLTWH(w * 0.46, -6, w * 0.08, 8),
+          Paint()..color = const Color(0xFFD64545)); // penacho
+    }
+
+    // espada flamejante do lado para onde olha
+    final swordX = _facing >= 0 ? w * 0.9 : -w * 0.12;
+    final bladeRect = Rect.fromLTWH(swordX, headH * 0.6, w * 0.14, torsoH);
+    canvas.drawRect(bladeRect, Paint()..color = const Color(0xFFCFD6E0)); // lâmina
+    // chama na ponta
+    canvas.drawCircle(Offset(bladeRect.center.dx, bladeRect.top - 2), 5,
+        Paint()..color = const Color(0xFFFF7A18));
+    canvas.drawCircle(Offset(bladeRect.center.dx, bladeRect.top - 2), 2.5,
+        Paint()..color = const Color(0xFFFFD65A));
   }
 
   // ---------------------------------------------------------------------------
@@ -176,7 +219,7 @@ class Knight extends PositionComponent
     super.onCollision(intersectionPoints, other);
     if (other is PlatformBlock) {
       _resolvePlatform(other);
-    } else if (other is Skeleton) {
+    } else if (other is Skeleton || other is Boss) {
       _takeDamage();
     }
   }

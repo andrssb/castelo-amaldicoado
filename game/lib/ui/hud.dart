@@ -14,11 +14,14 @@ class Hud extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      child: Stack(
+        children: [
+          Align(alignment: Alignment.topCenter, child: _BossBar(game: game)),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             _panel(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,6 +75,8 @@ class Hud extends StatelessWidget {
           ],
         ),
       ),
+          ],
+        ),
     );
   }
 
@@ -170,6 +175,83 @@ class _EnigmaClue extends StatelessWidget {
                 }),
               ],
             ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Barra do chefão no topo: nome e vida, ou aviso de "selado" enquanto o enigma
+/// não é resolvido.
+class _BossBar extends StatelessWidget {
+  const _BossBar({required this.game});
+
+  final CursedCastleGame game;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: game.bossPresent,
+      builder: (context, present, _) {
+        if (!present) return const SizedBox.shrink();
+        return Container(
+          margin: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: const Color(0xFF7A2E2E)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ValueListenableBuilder<String>(
+                valueListenable: game.bossName,
+                builder: (_, name, __) => Text(
+                  name,
+                  style: const TextStyle(
+                      color: Color(0xFFFF9A9A),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14),
+                ),
+              ),
+              const SizedBox(height: 4),
+              ValueListenableBuilder<bool>(
+                valueListenable: game.bossSealed,
+                builder: (_, sealed, __) {
+                  if (sealed) {
+                    return const Text('Selado — resolva o enigma',
+                        style: TextStyle(color: Color(0xFF9AA6C4), fontSize: 12));
+                  }
+                  return ValueListenableBuilder<int>(
+                    valueListenable: game.bossHp,
+                    builder: (_, hp, __) {
+                      final max = game.bossMaxHp.value;
+                      final frac = max == 0 ? 0.0 : hp / max;
+                      return Container(
+                        width: 220,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF3A2030),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: FractionallySizedBox(
+                          alignment: Alignment.centerLeft,
+                          widthFactor: frac.clamp(0.0, 1.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE23B3B),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
           ),
         );
       },

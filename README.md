@@ -1,6 +1,6 @@
 <div align="center">
 
-# Cursed Castle
+# Castelo Amaldiçoado
 
 **Um cavaleiro. Um castelo amaldiçoado. Uma corrida diária contra o mundo.**
 

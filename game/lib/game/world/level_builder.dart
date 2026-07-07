@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/models.dart';
+import '../components/boss.dart';
 import '../components/brazier.dart';
 import '../components/curse_totem.dart';
 import '../components/platform_block.dart';
@@ -23,6 +24,7 @@ class LevelLayout {
     required this.components,
     required this.braziers,
     required this.portal,
+    required this.boss,
     required this.knightStart,
     required this.width,
     required this.height,
@@ -31,6 +33,7 @@ class LevelLayout {
   final List<PositionComponent> components;
   final List<Brazier> braziers;
   final Portal? portal;
+  final Boss? boss;
   final Vector2 knightStart;
   final double width;
   final double height;
@@ -96,6 +99,7 @@ class LevelBuilder {
 
     final braziers = <Brazier>[];
     Portal? portal;
+    Boss boss;
 
     if (stage == 1) {
       // três arcanos espaçados pelo pátio
@@ -109,21 +113,27 @@ class LevelBuilder {
       }
       components.addAll(braziers);
 
-      // portal selado perto do fim
+      // chefão guardião perto do fim (selado até o enigma)
+      boss = Boss(position: Vector2(levelWidth - _tile * 5, groundY), maxHp: 6, isFinal: false);
+      // portal selado logo atrás do chefão
       portal = Portal(position: Vector2(levelWidth - _tile * 2, groundY));
       components.add(portal);
     } else {
-      // estágio 2: totens de maldição a destruir
+      // estágio 2: fantasmas rondando
       for (var i = 0; i < challenge.totalCurses; i++) {
         final px = _tile * 6 + rng.nextDouble() * (levelWidth - _tile * 8);
-        components.add(CurseTotem(position: Vector2(px, groundY)));
+        components.add(CurseTotem(position: Vector2(px, groundY - _tile)));
       }
+      // chefão final
+      boss = Boss(position: Vector2(levelWidth - _tile * 4, groundY), maxHp: 10, isFinal: true);
     }
+    components.add(boss);
 
     return LevelLayout(
       components: components,
       braziers: braziers,
       portal: portal,
+      boss: boss,
       knightStart: Vector2(_tile, groundY - _tile * 3),
       width: levelWidth,
       height: groundY + _tile * 3,

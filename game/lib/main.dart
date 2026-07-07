@@ -6,6 +6,7 @@ import 'api/models.dart';
 import 'api/offline_challenge.dart';
 import 'game/cursed_castle_game.dart';
 import 'ui/hud.dart';
+import 'ui/map_screen.dart';
 
 void main() {
   runApp(const CursedCastleApp());
@@ -17,7 +18,7 @@ class CursedCastleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cursed Castle',
+      title: 'Castelo Amaldiçoado',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true).copyWith(
         scaffoldBackgroundColor: const Color(0xFF0A0E20),
@@ -103,10 +104,10 @@ class _MenuScreenState extends State<MenuScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('CURSED CASTLE',
+                const Text('CASTELO AMALDIÇOADO',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 34,
+                        fontSize: 30,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 2,
                         color: Color(0xFFE8C36B))),
@@ -135,6 +136,19 @@ class _MenuScreenState extends State<MenuScreen> {
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Text('JOGAR'),
                   ),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => MapScreen(
+                        canPlay: _challenge != null,
+                        onPlay: _play,
+                      ),
+                    ),
+                  ),
+                  icon: const Icon(Icons.map),
+                  label: const Text('Ver mapa da jornada'),
                 ),
                 const SizedBox(height: 8),
                 const Text(

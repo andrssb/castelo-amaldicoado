@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import '../cursed_castle_game.dart';
 import 'fireball.dart';
 
-/// Totem de maldicao. Destrui-lo e o objetivo da fase; cada um destruido conta
-/// para o placar e para o progresso da run.
+/// Maldição em forma de fantasma. Destruí-la é objetivo secundário (pontos);
+/// flutua e balança de leve.
 class CurseTotem extends PositionComponent
     with CollisionCallbacks, HasGameReference<CursedCastleGame> {
   CurseTotem({required Vector2 position})
-      : super(position: position, size: Vector2(30, 46), anchor: Anchor.bottomCenter);
+      : super(position: position, size: Vector2(36, 46), anchor: Anchor.bottomCenter);
 
   double _pulse = 0;
 
@@ -29,18 +29,37 @@ class CurseTotem extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    final glow = 0.5 + 0.5 * (1 + math.sin(_pulse)) / 2;
-    final rect = Rect.fromLTWH(0, 0, size.x, size.y);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(rect, const Radius.circular(6)),
-      Paint()..color = Color.lerp(const Color(0xFF4B1E6B), const Color(0xFFB146E6), glow)!,
-    );
-    // "olho" da maldição
-    canvas.drawCircle(
-      Offset(size.x / 2, size.y / 2),
-      6,
-      Paint()..color = const Color(0xFFFFE38A),
-    );
+    final w = size.x;
+    final h = size.y;
+    final bob = math.sin(_pulse) * 3; // balanço suave
+
+    final body = Path();
+    // domo da cabeça
+    body.addArc(Rect.fromLTWH(0, bob, w, h * 0.9), 3.14, 3.14);
+    // laterais retas descendo
+    body.lineTo(w, h * 0.78 + bob);
+    // barra ondulada embaixo (cauda de fantasma)
+    const waves = 4;
+    for (var i = waves; i >= 0; i--) {
+      final x = w * i / waves;
+      final y = (i.isEven ? h * 0.78 : h * 0.9) + bob;
+      body.lineTo(x, y);
+    }
+    body.close();
+
+    canvas.drawPath(body, Paint()..color = const Color(0xCCB388FF));
+    canvas.drawPath(
+        body,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2
+          ..color = const Color(0xFFE0CCFF));
+
+    // olhos e boca sombrios
+    final dark = Paint()..color = const Color(0xFF2A1240);
+    canvas.drawOval(Rect.fromLTWH(w * 0.28, h * 0.3 + bob, w * 0.12, h * 0.16), dark);
+    canvas.drawOval(Rect.fromLTWH(w * 0.6, h * 0.3 + bob, w * 0.12, h * 0.16), dark);
+    canvas.drawOval(Rect.fromLTWH(w * 0.42, h * 0.52 + bob, w * 0.16, h * 0.12), dark);
   }
 
   @override
