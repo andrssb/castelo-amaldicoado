@@ -30,7 +30,7 @@ class Portal extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    final rect = Rect.fromLTWH(0, -size.y, size.x, size.y);
+    final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     final oval = RRect.fromRectAndRadius(rect, const Radius.circular(28));
 
     if (!open) {
@@ -55,7 +55,7 @@ class Portal extends PositionComponent
     for (var i = 0; i < 3; i++) {
       final r = (size.x / 2 - 6) * (1 - i * 0.25);
       canvas.drawCircle(
-        Offset(size.x / 2, -size.y / 2),
+        Offset(size.x / 2, size.y / 2),
         r + math.sin(_swirl + i) * 3,
         Paint()
           ..style = PaintingStyle.stroke

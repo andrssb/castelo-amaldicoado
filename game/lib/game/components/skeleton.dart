@@ -50,12 +50,12 @@ class Skeleton extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    final rect = Rect.fromLTWH(0, -size.y, size.x, size.y);
+    final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     canvas.drawRect(rect, Paint()..color = const Color(0xFFD9D2C3));
     // olhos
     final eye = Paint()..color = const Color(0xFF1B1030);
-    canvas.drawRect(Rect.fromLTWH(6, -size.y + 8, 4, 4), eye);
-    canvas.drawRect(Rect.fromLTWH(16, -size.y + 8, 4, 4), eye);
+    canvas.drawRect(const Rect.fromLTWH(6, 8, 4, 4), eye);
+    canvas.drawRect(const Rect.fromLTWH(16, 8, 4, 4), eye);
   }
 
   @override

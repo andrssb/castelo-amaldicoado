@@ -30,14 +30,14 @@ class CurseTotem extends PositionComponent
   @override
   void render(Canvas canvas) {
     final glow = 0.5 + 0.5 * (1 + math.sin(_pulse)) / 2;
-    final rect = Rect.fromLTWH(0, -size.y, size.x, size.y);
+    final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     canvas.drawRRect(
       RRect.fromRectAndRadius(rect, const Radius.circular(6)),
       Paint()..color = Color.lerp(const Color(0xFF4B1E6B), const Color(0xFFB146E6), glow)!,
     );
-    // "olho" da maldicao
+    // "olho" da maldição
     canvas.drawCircle(
-      Offset(size.x / 2, -size.y / 2),
+      Offset(size.x / 2, size.y / 2),
       6,
       Paint()..color = const Color(0xFFFFE38A),
     );

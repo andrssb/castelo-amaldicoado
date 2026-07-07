@@ -40,7 +40,7 @@ class Brazier extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    final base = Rect.fromLTWH(0, -size.y, size.x, size.y);
+    final base = Rect.fromLTWH(0, 0, size.x, size.y);
     // pilar
     canvas.drawRRect(
       RRect.fromRectAndRadius(base, const Radius.circular(6)),
@@ -48,15 +48,15 @@ class Brazier extends PositionComponent
     );
     // gema no topo
     final gemColor = lit ? color : color.withValues(alpha: 0.25);
-    canvas.drawCircle(Offset(size.x / 2, -size.y + 12), 8, Paint()..color = gemColor);
+    canvas.drawCircle(Offset(size.x / 2, 12), 8, Paint()..color = gemColor);
 
     if (lit) {
-      // chama por cima
+      // chama saindo por cima do pilar
       final h = 14 + math.sin(_pulse) * 4;
       final path = Path()
-        ..moveTo(size.x / 2 - 8, -size.y + 6)
-        ..lineTo(size.x / 2, -size.y + 6 - h)
-        ..lineTo(size.x / 2 + 8, -size.y + 6)
+        ..moveTo(size.x / 2 - 8, 6)
+        ..lineTo(size.x / 2, 6 - h)
+        ..lineTo(size.x / 2 + 8, 6)
         ..close();
       canvas.drawPath(path, Paint()..color = const Color(0xFFFFB020));
     }
