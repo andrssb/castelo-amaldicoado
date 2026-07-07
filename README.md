@@ -2,8 +2,6 @@
 
 # Castelo Amaldiçoado
 
-**Um cavaleiro. Um castelo amaldiçoado. Uma corrida diária contra o mundo.**
-
 Jogo de plataforma/ação no estilo dos clássicos dos anos 80/90 (inspirado em *Ghouls'n Ghosts*),
 com uma camada online de verdade: desafio diário procedural e ranking global validado no servidor.
 
@@ -15,7 +13,7 @@ com uma camada online de verdade: desafio diário procedural e ranking global va
 
 ## A ideia
 
-Arthur, o cavaleiro, precisa atravessar o castelo e destruir as maldições que o assolam.
+O cavaleiro precisa atravessar o castelo e destruir as maldições que o assolam.
 A armadura quebra quando ele toma dano (armadura → sem armadura → morte), tem pulo duplo e
 arremesso de arma — a fórmula clássica do gênero.
 
